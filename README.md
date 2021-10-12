@@ -10,9 +10,9 @@
 
  ### Functions
     Here, you can create a new account, update information
-     of an existing account, view and manage transactions, 
-     check the details of an existing account, remove 
-     existing account and view customers’ list.
+    of an existing account, view and manage transactions, 
+    check the details of an existing account, remove 
+    existing account and view customers’ list.
 ### Database
     Structures, 
 
@@ -22,8 +22,8 @@
     graphics. It is compiled in Code: Blocks with gcc compiler.
 
 ### Empathy map
-     A 5-step process for creating empathy maps that describe 
-     user characteristics at the start of a UX design process.
+    A 5-step process for creating empathy maps that describe 
+    user characteristics at the start of a UX design process.
 ```
 Says                            | Thinks
                                 |
