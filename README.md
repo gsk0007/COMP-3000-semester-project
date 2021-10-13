@@ -2,10 +2,9 @@
 ## Competitive terminal hangman
 
 ### Description 
-    Here is a project we developed as mini project in C++.
-    It is a competitive game of hangman that allows creation
-    of a user profile and top score tracking.
-    
+Here is a project we developed as mini project in C++.
+It is a competitive game of hangman that allows creation
+of a user profile and top score tracking.
  ### Functions
     Here, you can create a new player account, check their 
     rank, play a game, and check top scores
