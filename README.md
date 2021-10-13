@@ -12,7 +12,7 @@
 ### Database
     Words for the game to use are stored in a text file
     provided by infochimps and converted to a text file.
-    The project for the text file is available [here](https://github.com/dwyl/english-words.git).
+    The project for the text file is available [here](https://github.com/dwyl/english-words).
 
     Overall, with this project, you can perform banking 
     activities like in a REAL bank. Bank management mini 
