@@ -11,7 +11,7 @@ rank, play a game, and check top scores
 ### Database
 Words for the game to use are stored in a text file
 provided by infochimps and converted to a text file.
-The project for the text file is available [here](https://github.com/dwyl/english-words.git)
+The project for the text file is available [here](https://github.com/dwyl/english-words.git).
 ### Empathy map
 A 5-step process for creating empathy maps that describe 
 user characteristics at the start of a UX design process.
