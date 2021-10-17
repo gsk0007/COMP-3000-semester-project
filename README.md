@@ -12,11 +12,13 @@ of a user profile and top score tracking.
 
 ### Functions
 randomWord() - generates a random word from a file for player to guess
-checkGuess() - checks the letter that was guessed if it is in the word
-    outputs the letter or an error based on guess
-trackLetters() - keeps tracks of letters guessed outputs a list 
-    of remaining letters
+
+checkGuess() - checks the letter that was guessed if it is in the word outputs the letter or an error based on guess
+
+trackLetters() - keeps tracks of letters guessed outputs a list of remaining letters
+
 getScore() - gets the score of the player
+
 getTime() - tracks the time the player takes to guess the word
 ```
 class Player{
@@ -58,10 +60,10 @@ _____________________________A User_________________________
 Does                            | Feels
                                 |
                                 |
-    Checks for letter in word   |
-                                |
-                                |
-                                |
+Checks for letter in word       |   Satisfied with how fast
+Keeps track of time it          |   the word is solved
+ takes for word to be guessed   |   Upset with how long it
+                                |   took to solve the word
                                 |
                                 |
                                 |
