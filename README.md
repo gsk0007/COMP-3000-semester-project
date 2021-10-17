@@ -8,7 +8,9 @@ by Samuel Koser and Kennedy Edwards
 
 Here is a project we developed as mini project in C++.
 It is a competitive game of hangman that allows creation
-of a user profile and top score tracking.
+of a user profile and top score tracking. Along with single
+player, the game offers a competitive mode where players can
+take turns guessing the same word.
 
 ### Functions
 
