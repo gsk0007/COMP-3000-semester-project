@@ -1,11 +1,12 @@
 # COMP 3000 semester project
 ## Competitive terminal hangman
+by Samuel Koser and Kennedy Edwards
 
 ### Description 
 Here is a project we developed as mini project in C++.
 It is a competitive game of hangman that allows creation
 of a user profile and top score tracking.
- ### Functions
+### Functions
 Here, you can create a new player account, check their 
 rank, play a game, and check top scores
 ### Database
@@ -29,7 +30,7 @@ Says                            | Thinks
                                 |
                                 |
                                 |
-_________________________Samuel Koser_________________________
+_____________________________A User_________________________
 Does                            | Feels
                                 |
                                 |
@@ -44,3 +45,5 @@ Does                            | Feels
                                 |
                                 |
 ```
+
+### Resources
