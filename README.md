@@ -13,9 +13,9 @@ of a user profile and top score tracking.
 ### Functions
 randomWord() - generates a random word from a file for player to guess
 
-checkGuess() - checks the letter that was guessed if it is in the word outputs the letter or an error based on guess
+checkGuess() - checks the letter that was guessed if it is in the word, then outputs the letter or an error based on guess
 
-trackLetters() - keeps tracks of letters guessed outputs a list of remaining letters
+trackLetters() - keeps tracks of letters guessed, then outputs a list of remaining letters
 
 getScore() - gets the score of the player
 
