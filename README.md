@@ -32,7 +32,7 @@ class Player{
 
 ### Database
 
-Words for the game to use are stored in a text file. 
+Words for the game to use are stored in a text file.
 The top scores of all time are stored in another file.
 
 ### Empathy map
@@ -60,9 +60,9 @@ Does                            | Feels
                                 |
     Guesses a letter            |   Satisfied with how fast
                                 |   the word is solved
-    Chooses to play a game      |   Upset with how long it
-                                |   took to solve the word
-    Chooses between singleplayer|
+    Chooses to play a game      |   
+                                |   Upset with how long it
+    Chooses between singleplayer|   took to solve the word
     and multiplayer             |
                                 |
                                 |
