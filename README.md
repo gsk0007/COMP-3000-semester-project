@@ -11,21 +11,19 @@ It is a competitive game of hangman that allows creation
 of a user profile and top score tracking.
 
 ### Functions
-randomWord() - generates a random word from a file for player to guess
 
-checkGuess() - checks the letter that was guessed if it is in the word, then outputs the letter or an error based on guess
-
-trackLetters() - keeps tracks of letters guessed, then outputs a list of remaining letters
-
-getScore() - gets the score of the player
-
-getTime() - tracks the time the player takes to guess the word
 ```
 class Player{
     public:
-        int getScore();
-        double getTime();
-        void randomWord();
+        randomWord() - chooses a random word from a file for player to guess
+
+        checkGuess() - checks the letter that was guessed if it is in the word, then outputs the letter or an error based on guess
+
+        trackLetters() - keeps tracks of letters guessed, then outputs a list of remaining letters
+
+        getScore() - gets the score of the player
+
+        getTime() - tracks the time the player takes to guess the word
     private:
         int score;
         double time;
@@ -45,11 +43,11 @@ user characteristics at the start of a UX design process.
 ```
 Says                            | Thinks
                                 |
-    Enter guess                 |   How long is word?
+    I want to play a game       |   How long is word?
                                 |
-                                |
-                                |
-                                |
+    I want to play a game with  |   What is the word?
+    a friend                    |
+                                |   What letter should I guess?
                                 |
                                 |
                                 |
@@ -60,12 +58,12 @@ _____________________________A User_________________________
 Does                            | Feels
                                 |
                                 |
-Checks for letter in word       |   Satisfied with how fast
-Keeps track of time it          |   the word is solved
- takes for word to be guessed   |   Upset with how long it
+    Guesses a letter            |   Satisfied with how fast
+                                |   the word is solved
+    Chooses to play a game      |   Upset with how long it
                                 |   took to solve the word
-                                |
-                                |
+    Chooses between singleplayer|
+    and multiplayer             |
                                 |
                                 |
                                 |
@@ -74,5 +72,5 @@ Keeps track of time it          |   the word is solved
 
 ### Resources
 
-list of words provided by infochimps and converted to a text file.
+A list of words provided by infochimps and converted to a text file.
 The project for the text file is available [here](https://github.com/dwyl/english-words.git).
