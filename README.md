@@ -35,7 +35,8 @@ class Player{
 ### Database
 
 Words for the game to use are stored in a text file.
-The top scores of all time are stored in another file.
+The top scores of all time and the player that
+scored that score are stored in another file.
 
 ### Empathy map
 
