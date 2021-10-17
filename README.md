@@ -16,8 +16,8 @@ checkGuess() - checks the letter that was guessed if it is in the word
     outputs the letter or an error based on guess
 trackLetters() - keeps tracks of letters guessed outputs a list 
     of remaining letters
-getScore() -
-getTime() -
+getScore() - gets the score of the player
+getTime() - tracks the time the player takes to guess the word
 ```
 class Player{
     public:
