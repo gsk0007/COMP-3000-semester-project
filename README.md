@@ -9,12 +9,14 @@
     is named “Customer Account Bank Management System”.
 
  ### Functions
-    Here, you can create a new account, update information
-    of an existing account, view and manage transactions, 
-    check the details of an existing account, remove 
-    existing account and view customers’ list.
+    randomWord() - generates a random word from a file for player to guess
+    checkGuess() - checks the letter that was guessed if it is in the word
+    outputs the letter or an error based on guess
+    trackLetters() - keeps tracks of letters guessed outputs a list 
+    of remaining letters
+
 ### Database
-    Structures, 
+    Structures,
 
     Overall, with this project, you can perform banking 
     activities like in a REAL bank. Bank management mini 
@@ -27,7 +29,7 @@
 ```
 Says                            | Thinks
                                 |
-                                |
+  Enter guess                   |   How long is word?
                                 |
                                 |
                                 |
@@ -41,7 +43,7 @@ Says                            | Thinks
 _________________________Samuel Koser_________________________
 Does                            | Feels
                                 |
-                                |
+  Checks for letter in word     |
                                 |
                                 |
                                 |
