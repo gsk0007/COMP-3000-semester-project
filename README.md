@@ -27,6 +27,7 @@ class Player{
 
         getTime() - tracks the time the player takes to guess the word
     private:
+        string username;
         int score;
         double time;
 }
