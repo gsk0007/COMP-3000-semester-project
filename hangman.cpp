@@ -1,8 +1,157 @@
-#include<iostream>
+#include <iostream>
+#include <string>
+#include <iomanip>
+#include <vector>
 using namespace std;
 
+class Player
+{
+public:
+    string randomWord(); // chooses a random word from a file for player to guess
+    bool checkGuess(); // checks the letter that was guessed if it is in the word, then outputs the letter or an error based on guess
+    string trackLetters(); // keeps tracks of letters guessed, then outputs a list of remaining letters
+    int getScore(); // gets the score of the player
+    double getTime(); // tracks the time the player takes to guess the word
+private:
+    string username;
+    int score;
+    double time;
+};
 
-int main(){
+int hangman(string word, char guess, int &manCounter, char board[8][6], int letterLoc[50]);
+
+// Variables for testing (will be removed later)
+string testWord = "abouchement";
+
+int main()
+{
+    // Variables
+    int wordCounter = 0;
+    bool wordSolve = false;
+    int guessCounter = 0, temp;
+    char guess;
+    vector<char> lettersGuessed;
+    char wordDisplay[50];
+    int letterLoc[50];
+    for(int i = 0; i < 50; i++)
+    {
+        letterLoc[i] = 0;
+        wordDisplay[i] = '_';
+    }
+    char board[8][6] = {{' ','_','_','_','_',' '},
+                        {' ','|',' ',' ','|',' '},
+                        {' ','|',' ',' ',' ',' '},
+                        {' ','|',' ',' ',' ',' '},
+                        {' ','|',' ',' ',' ',' '},
+                        {' ','|',' ',' ',' ',' '},
+                        {' ','|',' ',' ',' ',' '},
+                        {'_','|','_','_','_','_'}};
+
+    while(guessCounter < 8 && !wordSolve){
+        for(int i = 0; i < 50; i++)
+        {
+            letterLoc[i] = 0;
+        }
 
 
+        cout << "Enter a letter: ";
+        cin >> guess;
+
+        temp = guessCounter;
+        guessCounter = hangman(testWord, guess, guessCounter, board, letterLoc);
+
+        if (guessCounter > temp){
+            lettersGuessed.push_back(guess);
+        }
+        else if(guessCounter == temp){
+            for(int i = 0; i<50; i++){
+                if(letterLoc[i] == 1){
+                    wordDisplay[i] = guess;
+                }
+            }
+        }
+        
+
+        cout << endl;
+        for (int i = 0; i < 8; i++)
+        {
+            cout <<  board[i][0] << setw(1) <<  board[i][1] << setw(1) <<  board[i][2] << setw(1) <<  board[i][3] << setw(1) <<  board[i][4] << setw(1) <<  board[i][5] << endl;
+        }
+
+        cout << "Word with correct letters: ";
+        for (int i = 0; i < testWord.length(); i++)
+        {
+            cout << wordDisplay[i];
+        }
+        cout << endl;
+        //cout << "Letter Loc: " << letterLoc << endl;
+        cout << "Letters guessed: ";
+        for (int i = 0; i < lettersGuessed.size(); i++)
+        {
+            cout << lettersGuessed[i] << " ";
+        }
+        cout << endl;
+        
+        wordCounter = 0;
+        for (int i = 0; i < testWord.length(); i++)
+        {
+            if (wordDisplay[i] == testWord[i])
+            {
+                wordCounter++;
+            }
+        }
+
+        if (wordCounter == testWord.length())
+        {
+            wordSolve = true;
+            cout << "Congratulations! You won!";
+        }
+    }
 }
+
+int hangman(string word, char guess, int &manCounter, char board[8][6], int letterLoc[50])
+{
+    bool guessFlag = false;
+    for (int i = 0; i < word.length(); i++)
+    {
+        if (word[i] == guess)
+        {
+            guessFlag = true;
+            letterLoc[i] = 1;
+        }
+    }
+    if(guessFlag == false){
+        manCounter++;
+        switch (manCounter)
+        {
+        case 1:
+            board[3][4] = 'O';
+            break;
+        case 2:
+            board[4][4] = '|';
+            break;
+        case 3:
+            board[4][4] = '|';
+            break;
+        case 4:
+            board[4][3] = '/';
+            break;
+        case 5:
+            board[4][5] = '\\';
+            break;
+        case 6:
+            board[5][4] = '|';
+            break;
+        case 7:
+            board[6][3] = '/';
+            break;
+        case 8:
+            board[6][5] = '\\';
+            break;
+        default:
+            break;
+        }
+    }
+
+    return manCounter;
+};
