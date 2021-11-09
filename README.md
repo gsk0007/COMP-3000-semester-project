@@ -20,11 +20,11 @@ class Player{
 
         checkGuess() - checks the letter that was guessed if it is in the word, then outputs the letter or an error based on guess
 
-        trackLetters() - keeps tracks of letters guessed, then outputs a list of remaining letters
-
         getScore() - gets the score of the player
 
         getTime() - tracks the time the player takes to guess the word
+
+        playGame() - allows user to start playing a game
     private:
         string username;
         int score;

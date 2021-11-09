@@ -2,37 +2,54 @@
 #include <string>
 #include <iomanip>
 #include <vector>
+#include <fstream>
+#include <cstdlib>
+#include <random>
 using namespace std;
 
-//todo Timer for highscore, store highsore in file with name, get random word from file
+// todo Timer for highscore, store highsore in file with name, get random word from file
 class Player
 {
 public:
-    string randomWord(); // chooses a random word from a file for player to guess
-    bool checkGuess(); // checks the letter that was guessed if it is in the word, then outputs the letter or an error based on guess
-    string trackLetters(); // keeps tracks of letters guessed, then outputs a list of remaining letters
-    int getScore(); // gets the score of the player
-    double getTime(); // tracks the time the player takes to guess the word
-    void playGame(); // plays the game
+    // chooses a random word from a file for player to guess
+    string randomWord(vector<string> wordVec);
+
+    // checks the letter that was guessed against the word. If it is in the word, then it adds it to correctGuesses, 
+    // if not, it adds it to incorrectGuesses this also updates the board
+    void checkGuess(string testWord, char guess, int &guessCounter, char board[8][6], int letterLoc[50], vector<char> &lettersGuessed, char wordDisplay[50]);
+
+    // gets the score of the player
+    int getScore();
+
+    // tracks the time the player takes to guess the word
+    double getTime();
+
+    // plays the game
+    void playGame();
+
 private:
     string username;
     int score;
     double time;
 };
 
+// function prototypes for non-member functions 
 int hangman(string word, char guess, int &manCounter, char board[8][6], int letterLoc[50]);
 
-// Variables for testing (will be removed later)
-string testWord = "abouchement";
+//todo REMOVE THIS BEFORE FINISHING
+//________________________________________ Testing ________________________________________
+//string testWord = "abouchement";
+//_________________________________________________________________________________________
 
 int main()
 {
-Player player;
-player.playGame();
+    Player player;
+    player.playGame();
 }
 
 // ___________________Member Functions___________________________
-void Player::playGame(){
+void Player::playGame()
+{
     // Variables
     int wordCounter = 0;
     bool wordSolve = false;
@@ -42,23 +59,33 @@ void Player::playGame(){
     char wordDisplay[50];
     int letterLoc[50];
     // Initialize arrays for later use
-    for(int i = 0; i < 50; i++)
+    for (int i = 0; i < 50; i++)
     {
         letterLoc[i] = 0;
         wordDisplay[i] = '_';
     }
     // Initialize the board
-    char board[8][6] = {{' ','_','_','_','_',' '},
-                        {' ','|',' ',' ','|',' '},
-                        {' ','|',' ',' ',' ',' '},
-                        {' ','|',' ',' ',' ',' '},
-                        {' ','|',' ',' ',' ',' '},
-                        {' ','|',' ',' ',' ',' '},
-                        {' ','|',' ',' ',' ',' '},
-                        {'_','|','_','_','_','_'}};
+    char board[8][6] = {{' ', '_', '_', '_', '_', ' '},
+                        {' ', '|', ' ', ' ', '|', ' '},
+                        {' ', '|', ' ', ' ', ' ', ' '},
+                        {' ', '|', ' ', ' ', ' ', ' '},
+                        {' ', '|', ' ', ' ', ' ', ' '},
+                        {' ', '|', ' ', ' ', ' ', ' '},
+                        {' ', '|', ' ', ' ', ' ', ' '},
+                        {'_', '|', '_', '_', '_', '_'}};
 
-    while(guessCounter < 8 && !wordSolve){
-        for(int i = 0; i < 50; i++)
+    // Initialize vector of words
+    vector<string> words;
+    ifstream file("words_alpha.txt");
+    string line;
+    while (getline(file, line)) words.push_back(line);
+    file.close();
+
+    string testWord = randomWord(words);
+
+    while (guessCounter < 8 && !wordSolve)
+    {
+        for (int i = 0; i < 50; i++)
         {
             letterLoc[i] = 0;
         }
@@ -68,27 +95,13 @@ void Player::playGame(){
         cin >> guess;
 
         // Check if a guessed letter is in the word
-        temp = guessCounter;
-        guessCounter = hangman(testWord, guess, guessCounter, board, letterLoc);
+        checkGuess(testWord, guess, guessCounter, board, letterLoc, lettersGuessed, wordDisplay);
 
-        // If the guess is not in the word, then add to the guess vector
-        if (guessCounter > temp){
-            lettersGuessed.push_back(guess);
-        }
-        // If the guess is in the word, then update the array with the correct letters
-        else if(guessCounter == temp){
-            for(int i = 0; i<50; i++){
-                if(letterLoc[i] == 1){
-                    wordDisplay[i] = guess;
-                }
-            }
-        }
-        
         // Prints the board
         cout << endl;
         for (int i = 0; i < 8; i++)
         {
-            cout <<  board[i][0] << setw(1) <<  board[i][1] << setw(1) <<  board[i][2] << setw(1) <<  board[i][3] << setw(1) <<  board[i][4] << setw(1) <<  board[i][5] << endl;
+            cout << board[i][0] << setw(1) << board[i][1] << setw(1) << board[i][2] << setw(1) << board[i][3] << setw(1) << board[i][4] << setw(1) << board[i][5] << endl;
         }
 
         // Prints the word with spaces and correclty guessed letters
@@ -116,14 +129,48 @@ void Player::playGame(){
             }
         }
 
-        // If the word is solved, the loop will end
+        // If the game is over, the loop will end. Depending on whether you solved the word or not, the output will be different
         if (wordCounter == testWord.length())
         {
             wordSolve = true;
             cout << "Congratulations! You won!";
+        } else if( guessCounter == 8)
+        {
+            cout << "You lost! The word was " << testWord << endl;
         }
     }
 }
+
+void Player::checkGuess(string testWord, char guess, int &guessCounter, char board[8][6], int letterLoc[50], vector<char> &lettersGuessed, char wordDisplay[50])
+{
+    // Check if a guessed letter is in the word
+    int temp = guessCounter;
+    guessCounter = hangman(testWord, guess, guessCounter, board, letterLoc);
+
+    // If the guess is not in the word, then add to the guess vector
+    if (guessCounter > temp)
+    {
+        lettersGuessed.push_back(guess);
+    }
+    // If the guess is in the word, then update the array with the correct letters
+    else if (guessCounter == temp)
+    {
+        for (int i = 0; i < 50; i++)
+        {
+            if (letterLoc[i] == 1)
+            {
+                wordDisplay[i] = guess;
+            }
+        }
+    }
+}
+
+string Player::randomWord(vector<string> wordVec){
+    std::default_random_engine generator;
+    std::uniform_int_distribution<int> distribution(1,370103);
+    int diceRoll = distribution(generator);  // generates number in the range 1..370103
+    return wordVec[diceRoll];
+};
 
 //__________________________ Functions __________________________
 int hangman(string word, char guess, int &manCounter, char board[8][6], int letterLoc[50])
@@ -140,7 +187,8 @@ int hangman(string word, char guess, int &manCounter, char board[8][6], int lett
         }
     }
     // if the letter is not in the word, then the board will be updated
-    if(guessFlag == false){
+    if (guessFlag == false)
+    {
         manCounter++;
         switch (manCounter)
         {
