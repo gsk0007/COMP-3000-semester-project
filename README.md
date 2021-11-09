@@ -10,6 +10,7 @@ Here is a project we developed as mini project in C++.
 It is a competitive game of hangman that allows creation
 of a user profile and top score tracking.
 
+
 ### Functions
 
 ```
