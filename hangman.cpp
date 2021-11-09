@@ -12,6 +12,7 @@ public:
     string trackLetters(); // keeps tracks of letters guessed, then outputs a list of remaining letters
     int getScore(); // gets the score of the player
     double getTime(); // tracks the time the player takes to guess the word
+    void playGame(); // plays the game
 private:
     string username;
     int score;
@@ -25,6 +26,12 @@ string testWord = "abouchement";
 
 int main()
 {
+Player player;
+player.playGame();
+}
+
+// ___________________Member Functions___________________________
+void Player::playGame(){
     // Variables
     int wordCounter = 0;
     bool wordSolve = false;
@@ -33,11 +40,13 @@ int main()
     vector<char> lettersGuessed;
     char wordDisplay[50];
     int letterLoc[50];
+    // Initialize arrays for later use
     for(int i = 0; i < 50; i++)
     {
         letterLoc[i] = 0;
         wordDisplay[i] = '_';
     }
+    // Initialize the board
     char board[8][6] = {{' ','_','_','_','_',' '},
                         {' ','|',' ',' ','|',' '},
                         {' ','|',' ',' ',' ',' '},
@@ -109,6 +118,7 @@ int main()
     }
 }
 
+//__________________________ Functions __________________________
 int hangman(string word, char guess, int &manCounter, char board[8][6], int letterLoc[50])
 {
     bool guessFlag = false;
