@@ -1,55 +1,78 @@
 # COMP 3000 semester project
+
 ## Competitive terminal hangman
 
-### Description 
-    Here is a project we developed as mini project in C++ 
-    bank management system during our first semester; it 
-    is complete and totally error-free. This project is 
-    focused on customer account services in bank, so it 
-    is named “Customer Account Bank Management System”.
+by Samuel Koser and Kennedy Edwards
 
- ### Functions
-    Here, you can create a new account, update information
-     of an existing account, view and manage transactions, 
-     check the details of an existing account, remove 
-     existing account and view customers’ list.
+### Description
+
+Here is a project we developed as mini project in C++.
+It is a competitive game of hangman that allows creation
+of a user profile and top score tracking.
+
+### Functions
+
+```
+class Player{
+    public:
+        randomWord() - chooses a random word from a file for player to guess
+
+        checkGuess() - checks the letter that was guessed if it is in the word, then outputs the letter or an error based on guess
+
+        trackLetters() - keeps tracks of letters guessed, then outputs a list of remaining letters
+
+        getScore() - gets the score of the player
+
+        getTime() - tracks the time the player takes to guess the word
+    private:
+        string username;
+        int score;
+        double time;
+}
+```
+
 ### Database
-    Structures, 
 
-    Overall, with this project, you can perform banking 
-    activities like in a REAL bank. Bank management mini 
-    project in C++ is a console application without 
-    graphics. It is compiled in Code: Blocks with gcc compiler.
+Words for the game to use are stored in a text file.
+The top scores of all time and the player that
+scored that score are stored in another file.
 
 ### Empathy map
-     A 5-step process for creating empathy maps that describe 
-     user characteristics at the start of a UX design process.
+
+A 5-step process for creating empathy maps that describe
+user characteristics at the start of a UX design process.
+
 ```
 Says                            | Thinks
                                 |
+    I want to play a game       |   How long is word?
+                                |
+    I want to be the fastest    |   What is the word?
+                                |
+                                |   What letter should I guess?
                                 |
                                 |
                                 |
                                 |
                                 |
                                 |
-                                |
-                                |
-                                |
-                                |
-                                |
-_________________________Samuel Koser_________________________
+_____________________________A User_________________________
 Does                            | Feels
                                 |
                                 |
-                                |
-                                |
-                                |
-                                |
-                                |
+    Guesses a letter            |   Satisfied with how fast
+                                |   the word is solved
+    Chooses to play a game      |   
+                                |   Upset with how long it
+                                |   took to solve the word
                                 |
                                 |
                                 |
                                 |
                                 |
 ```
+
+### Resources
+
+A list of words provided by infochimps and converted to a text file.
+The project for the text file is available [here](https://github.com/dwyl/english-words.git).
