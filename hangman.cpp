@@ -5,14 +5,15 @@
 #include <fstream>
 #include <cstdlib>
 #include <random>
+#include <ctime>
 using namespace std;
 
-// todo Timer for highscore, store highsore in file with name, get random word from file
+// todo Timer for highscore, store highsore in file with name
 class Player
 {
 public:
     // chooses a random word from a file for player to guess
-    string randomWord(vector<string> wordVec, default_random_engine generator, uniform_int_distribution<int> distribution);
+    string randomWord(vector<string> wordVec);
 
     // checks the letter that was guessed against the word. If it is in the word, then it adds it to correctGuesses, 
     // if not, it adds it to incorrectGuesses this also updates the board
@@ -25,7 +26,7 @@ public:
     double getTime();
 
     // plays the game
-    void playGame(vector<string> testWord, default_random_engine generator, uniform_int_distribution<int> distribution);
+    void playGame(vector<string> testWord);
 
     // resets the game
     void resetGame();
@@ -33,7 +34,7 @@ public:
 private:
     // Variables
     string username;
-    int score, wordCounter = 0, guessCounter = 0, temp;
+    int score, wordCounter = 0, guessCounter = 0, temp, diceRoll;
     double time;
     bool wordSolve = false;
     char guess;
@@ -55,11 +56,6 @@ private:
 // function prototypes for non-member functions 
 int hangman(string word, char guess, int &manCounter, char board[8][6], int letterLoc[50]);
 
-//todo REMOVE THIS BEFORE FINISHING
-//________________________________________ Testing ________________________________________
-//string testWord = "abouchement";
-//_________________________________________________________________________________________
-
 int main()
 {
     // create object of class Player
@@ -71,8 +67,7 @@ int main()
     // Temp variable for end of game
     char temp;
     // Random number generator stuff
-    default_random_engine generator;
-    uniform_int_distribution<int> distribution(0,370102);
+    srand((int)time(0));
     // Initialize vector of words
     vector<string> words;
     ifstream file("words_alpha.txt");
@@ -105,7 +100,7 @@ int main()
             case 1:
                 // Play game
                 player.resetGame();
-                player.playGame(words, generator, distribution);
+                player.playGame(words);
                 break;
             case 2:
                 // Highscores
@@ -129,7 +124,7 @@ int main()
 }
 
 // ___________________Member Functions___________________________
-void Player::playGame(vector<string> words, default_random_engine generator, uniform_int_distribution<int> distribution)
+void Player::playGame(vector<string> words)
 {
     // Initialize arrays for later use
     for (int i = 0; i < 50; i++)
@@ -138,7 +133,7 @@ void Player::playGame(vector<string> words, default_random_engine generator, uni
         wordDisplay[i] = '_';
     }
     // get a random word from the vector
-    string testWord = randomWord(words, generator, distribution);
+    string testWord = randomWord(words);
 
     while (guessCounter < 8 && !wordSolve)
     {
@@ -222,9 +217,9 @@ void Player::checkGuess(string testWord, char guess, int &guessCounter, char boa
     }
 }
 
-string Player::randomWord(vector<string> wordVec, default_random_engine generator, uniform_int_distribution<int> distribution){
-    //int diceRoll = ;  // generates number in the range 1..370103
-    return wordVec[distribution(generator)];
+string Player::randomWord(vector<string> wordVec){
+    //diceRoll = distribution(generator);  // generates number in the range 1..370103
+    return wordVec[rand() % 370102];
 };
 
 void Player::resetGame(){
