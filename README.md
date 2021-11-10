@@ -8,9 +8,8 @@ by Samuel Koser and Kennedy Edwards
 
 Here is a project we developed as mini project in C++.
 It is a competitive game of hangman that allows creation
-of a user profile and top score tracking. Along with single
-player, the game offers a competitive mode where players can
-take turns guessing the same word.
+of a user profile and top score tracking.
+
 
 ### Functions
 
@@ -49,8 +48,8 @@ Says                            | Thinks
                                 |
     I want to play a game       |   How long is word?
                                 |
-    I want to play a game with  |   What is the word?
-    a friend                    |
+    I want to be the fastest    |   What is the word?
+                                |
                                 |   What letter should I guess?
                                 |
                                 |
@@ -66,8 +65,8 @@ Does                            | Feels
                                 |   the word is solved
     Chooses to play a game      |   
                                 |   Upset with how long it
-    Chooses between singleplayer|   took to solve the word
-    and multiplayer             |
+                                |   took to solve the word
+                                |
                                 |
                                 |
                                 |
