@@ -12,7 +12,7 @@ class Player
 {
 public:
     // chooses a random word from a file for player to guess
-    string randomWord(vector<string> wordVec);
+    string randomWord(vector<string> wordVec, default_random_engine generator, uniform_int_distribution<int> distribution);
 
     // checks the letter that was guessed against the word. If it is in the word, then it adds it to correctGuesses, 
     // if not, it adds it to incorrectGuesses this also updates the board
@@ -25,12 +25,31 @@ public:
     double getTime();
 
     // plays the game
-    void playGame();
+    void playGame(vector<string> testWord, default_random_engine generator, uniform_int_distribution<int> distribution);
+
+    // resets the game
+    void resetGame();
 
 private:
+    // Variables
     string username;
-    int score;
+    int score, wordCounter = 0, guessCounter = 0, temp;
     double time;
+    bool wordSolve = false;
+    char guess;
+    vector<char> lettersGuessed;
+    char wordDisplay[50];
+    int letterLoc[50];
+    // initializes the board
+    char board[8][6] = {{' ', '_', '_', '_', '_', ' '},
+                        {' ', '|', ' ', ' ', '|', ' '},
+                        {' ', '|', ' ', ' ', ' ', ' '},
+                        {' ', '|', ' ', ' ', ' ', ' '},
+                        {' ', '|', ' ', ' ', ' ', ' '},
+                        {' ', '|', ' ', ' ', ' ', ' '},
+                        {' ', '|', ' ', ' ', ' ', ' '},
+                        {'_', '|', '_', '_', '_', '_'}};
+
 };
 
 // function prototypes for non-member functions 
@@ -43,45 +62,83 @@ int hangman(string word, char guess, int &manCounter, char board[8][6], int lett
 
 int main()
 {
+    // create object of class Player
     Player player;
-    player.playGame();
+    // Bool for game loop
+    bool play = true;
+    // Int for menu choice
+    int menuChoice;
+    // Temp variable for end of game
+    char temp;
+    // Random number generator stuff
+    default_random_engine generator;
+    uniform_int_distribution<int> distribution(0,370102);
+    // Initialize vector of words
+    vector<string> words;
+    ifstream file("words_alpha.txt");
+    string line;
+    if(file.is_open())
+    {
+        while(file.good())
+        {
+            getline(file, line);
+            words.push_back(line);
+        }
+    }
+    else
+    {
+        cout << "File not found" << endl;
+    }
+    file.close();
+
+    while(play){
+        // Menu for player to interact with
+        cout << "Welcome to Hangman!" << endl <<
+        "1. Play Game" << endl <<
+        "2. Highscores" << endl <<
+        "3. Quit" << endl;
+        // Get menu choice
+        cin >> menuChoice;
+        // Switch statement for menu choice
+        switch(menuChoice)
+        {
+            case 1:
+                // Play game
+                player.resetGame();
+                player.playGame(words, generator, distribution);
+                break;
+            case 2:
+                // Highscores
+                break;
+            case 3:
+                // Quit
+                play = false;
+                break;
+            default:
+                cout << "Invalid choice" << endl;
+                break;
+        }
+        cout << "Do you want to play again? y/n" << endl;
+        cin >> temp;
+        if (temp == 'n' || temp == 'N')
+        {
+            play = false;
+        }
+    }
+
 }
 
 // ___________________Member Functions___________________________
-void Player::playGame()
+void Player::playGame(vector<string> words, default_random_engine generator, uniform_int_distribution<int> distribution)
 {
-    // Variables
-    int wordCounter = 0;
-    bool wordSolve = false;
-    int guessCounter = 0, temp;
-    char guess;
-    vector<char> lettersGuessed;
-    char wordDisplay[50];
-    int letterLoc[50];
     // Initialize arrays for later use
     for (int i = 0; i < 50; i++)
     {
         letterLoc[i] = 0;
         wordDisplay[i] = '_';
     }
-    // Initialize the board
-    char board[8][6] = {{' ', '_', '_', '_', '_', ' '},
-                        {' ', '|', ' ', ' ', '|', ' '},
-                        {' ', '|', ' ', ' ', ' ', ' '},
-                        {' ', '|', ' ', ' ', ' ', ' '},
-                        {' ', '|', ' ', ' ', ' ', ' '},
-                        {' ', '|', ' ', ' ', ' ', ' '},
-                        {' ', '|', ' ', ' ', ' ', ' '},
-                        {'_', '|', '_', '_', '_', '_'}};
-
-    // Initialize vector of words
-    vector<string> words;
-    ifstream file("words_alpha.txt");
-    string line;
-    while (getline(file, line)) words.push_back(line);
-    file.close();
-
-    string testWord = randomWord(words);
+    // get a random word from the vector
+    string testWord = randomWord(words, generator, distribution);
 
     while (guessCounter < 8 && !wordSolve)
     {
@@ -104,9 +161,9 @@ void Player::playGame()
             cout << board[i][0] << setw(1) << board[i][1] << setw(1) << board[i][2] << setw(1) << board[i][3] << setw(1) << board[i][4] << setw(1) << board[i][5] << endl;
         }
 
-        // Prints the word with spaces and correclty guessed letters
+        // Prints the word with spaces and correctly guessed letters
         cout << "Word with correct letters: ";
-        for (int i = 0; i < testWord.length(); i++)
+        for (int i = 0; i < testWord.length()-1; i++)
         {
             cout << wordDisplay[i];
         }
@@ -130,10 +187,10 @@ void Player::playGame()
         }
 
         // If the game is over, the loop will end. Depending on whether you solved the word or not, the output will be different
-        if (wordCounter == testWord.length())
+        if (wordCounter == testWord.length()-1)
         {
             wordSolve = true;
-            cout << "Congratulations! You won!";
+            cout << "Congratulations! You won!" << endl;
         } else if( guessCounter == 8)
         {
             cout << "You lost! The word was " << testWord << endl;
@@ -165,12 +222,44 @@ void Player::checkGuess(string testWord, char guess, int &guessCounter, char boa
     }
 }
 
-string Player::randomWord(vector<string> wordVec){
-    std::default_random_engine generator;
-    std::uniform_int_distribution<int> distribution(1,370103);
-    int diceRoll = distribution(generator);  // generates number in the range 1..370103
-    return wordVec[diceRoll];
+string Player::randomWord(vector<string> wordVec, default_random_engine generator, uniform_int_distribution<int> distribution){
+    //int diceRoll = ;  // generates number in the range 1..370103
+    return wordVec[distribution(generator)];
 };
+
+void Player::resetGame(){
+    // Variables
+    score = 0;
+    time = 0;
+    wordCounter = 0;
+    wordSolve = false;
+    guessCounter = 0, temp;
+    for(int i = 0; lettersGuessed.size(); i++)
+    {
+        lettersGuessed.pop_back();
+    }
+    // Initialize arrays for later use
+    for (int i = 0; i < 50; i++)
+    {
+        letterLoc[i] = 0;
+        wordDisplay[i] = '_';
+    }
+    // Initialize the board
+    char boardReset[8][6] = {{' ', '_', '_', '_', '_', ' '},
+                            {' ', '|', ' ', ' ', '|', ' '},
+                            {' ', '|', ' ', ' ', ' ', ' '},
+                            {' ', '|', ' ', ' ', ' ', ' '},
+                            {' ', '|', ' ', ' ', ' ', ' '},
+                            {' ', '|', ' ', ' ', ' ', ' '},
+                            {' ', '|', ' ', ' ', ' ', ' '},
+                            {'_', '|', '_', '_', '_', '_'}};
+    // Copy the boardReset array to the board array
+    for (int i = 0; i < 8; i++){
+        for (int j = 0; j < 6; j++){
+            board[i][j] = boardReset[i][j];
+        }
+    }
+}
 
 //__________________________ Functions __________________________
 int hangman(string word, char guess, int &manCounter, char board[8][6], int letterLoc[50])
