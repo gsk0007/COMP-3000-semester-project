@@ -409,7 +409,7 @@ void Player::getHighScores(){
         {
             // get username and score from file
             getline(scoreFileRead, userLine, ',');
-            scoreFileRead >> tempLine;
+            scoreFileRead >> scoreLine;
             // throw away the comma and return character
             scoreFileRead.get(tempLine);
             // create new score object and add to vector of all scores
@@ -424,7 +424,7 @@ void Player::getHighScores(){
     scoreFileRead.close();
 
     // Print the vector
-    for (int i = 0; i < scoresVec.size(); i++)
+    for (int i = 0; i < scoresVec.size() && i < 5 ; i++)
     {
         cout << scoresVec[i].getUsername() << " " << scoresVec[i].getScore() << endl;
     }
