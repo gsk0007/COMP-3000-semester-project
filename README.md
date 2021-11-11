@@ -30,6 +30,8 @@ class Player{
         int score;
         double time;
 }
+
+int hangman() 
 ```
 
 ### Database

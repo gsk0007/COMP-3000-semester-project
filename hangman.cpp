@@ -6,9 +6,11 @@
 #include <cstdlib>
 #include <random>
 #include <ctime>
+#include <cstring>
+#include <algorithm>
 using namespace std;
 
-// todo Timer for highscore, store highsore in file with name
+// todo Timer for highscore, store highscore in file with name
 class Player
 {
 public:
@@ -31,13 +33,17 @@ public:
     // resets the game
     void resetGame();
 
+    // sets the score of the player
+    void scoreSave();
+
 private:
     // Variables
+    time_t endTime, startTime;
     string username;
     int score, wordCounter = 0, guessCounter = 0, temp, diceRoll;
     double time;
     bool wordSolve = false;
-    char guess;
+    char guess, scoreChoice;
     vector<char> lettersGuessed;
     char wordDisplay[50];
     int letterLoc[50];
@@ -51,6 +57,24 @@ private:
                         {' ', '|', ' ', ' ', ' ', ' '},
                         {'_', '|', '_', '_', '_', '_'}};
 
+};
+
+class ScoreClass
+{
+public:
+    // default constructor
+    ScoreClass();
+    // constructor with parameters
+    ScoreClass(string getName, int getScore){
+        name = getName;
+        score = getScore;
+    };
+    int getScore(){return score;};
+    string getUsername(){return name;};
+
+private:
+    string name;
+    int score;
 };
 
 // function prototypes for non-member functions 
@@ -72,6 +96,8 @@ int main()
     vector<string> words;
     ifstream file("words_alpha.txt");
     string line;
+
+    // Read in words from file and store in vector
     if(file.is_open())
     {
         while(file.good())
@@ -111,6 +137,8 @@ int main()
                 break;
             default:
                 cout << "Invalid choice" << endl;
+                cin.clear();
+                cin.ignore(10000, '\n');
                 break;
         }
         cout << "Do you want to play again? y/n" << endl;
@@ -126,6 +154,8 @@ int main()
 // ___________________Member Functions___________________________
 void Player::playGame(vector<string> words)
 {
+    // Get start time
+    std::time(&startTime);
     // Initialize arrays for later use
     for (int i = 0; i < 50; i++)
     {
@@ -185,7 +215,15 @@ void Player::playGame(vector<string> words)
         if (wordCounter == testWord.length()-1)
         {
             wordSolve = true;
-            cout << "Congratulations! You won!" << endl;
+            cout << "Congratulations! You won!" << endl << "The word was: " << testWord << endl << endl << "Would you like to save your score? y/n" << endl;
+            cin >> scoreChoice;
+            if (scoreChoice == 'y' || scoreChoice == 'Y')
+            {
+                scoreSave();
+            }
+
+            //cin.getline(username, 256);
+
         } else if( guessCounter == 8)
         {
             cout << "You lost! The word was " << testWord << endl;
@@ -223,12 +261,12 @@ string Player::randomWord(vector<string> wordVec){
 };
 
 void Player::resetGame(){
-    // Variables
+    // restting variables
     score = 0;
     time = 0;
     wordCounter = 0;
     wordSolve = false;
-    guessCounter = 0, temp;
+    guessCounter = 0;
     for(int i = 0; lettersGuessed.size(); i++)
     {
         lettersGuessed.pop_back();
@@ -239,21 +277,96 @@ void Player::resetGame(){
         letterLoc[i] = 0;
         wordDisplay[i] = '_';
     }
-    // Initialize the board
-    char boardReset[8][6] = {{' ', '_', '_', '_', '_', ' '},
-                            {' ', '|', ' ', ' ', '|', ' '},
-                            {' ', '|', ' ', ' ', ' ', ' '},
-                            {' ', '|', ' ', ' ', ' ', ' '},
-                            {' ', '|', ' ', ' ', ' ', ' '},
-                            {' ', '|', ' ', ' ', ' ', ' '},
-                            {' ', '|', ' ', ' ', ' ', ' '},
-                            {'_', '|', '_', '_', '_', '_'}};
+    // Copy of the blank board
+    const char boardReset[8][6] = {{' ', '_', '_', '_', '_', ' '},
+                                {' ', '|', ' ', ' ', '|', ' '},
+                                {' ', '|', ' ', ' ', ' ', ' '},
+                                {' ', '|', ' ', ' ', ' ', ' '},
+                                {' ', '|', ' ', ' ', ' ', ' '},
+                                {' ', '|', ' ', ' ', ' ', ' '},
+                                {' ', '|', ' ', ' ', ' ', ' '},
+                                {'_', '|', '_', '_', '_', '_'}};
     // Copy the boardReset array to the board array
-    for (int i = 0; i < 8; i++){
-        for (int j = 0; j < 6; j++){
-            board[i][j] = boardReset[i][j];
+    for(int i = 0; i<6; i++){
+        strncpy(board[i], boardReset[i], sizeof(boardReset[1]));
+    }
+}
+
+double Player::getTime(){
+    // Get end time
+    std::time(&endTime);
+    // Calculate time
+    return difftime(endTime, startTime);
+}
+
+void Player::scoreSave(){
+    // vector to hold the scores
+    vector<ScoreClass> scoresVec;
+    // Get the previous scores
+    ifstream scoreFile;
+    string userLine;
+    int scoreLine;
+    scoreFile.open("scores.csv");
+    if(scoreFile.is_open())
+    {
+        while(scoreFile.good())
+        {
+            getline(scoreFile, userLine, ',');
+            scoreFile >> scoreLine;
+            ScoreClass temp(userLine, scoreLine);
+            scoresVec.push_back(temp);
         }
     }
+    else
+    {
+        cout << "File not found" << endl;
+    }
+    scoreFile.close();
+
+    // Get the score
+    score = getTime() / wordCounter;
+    // Get the username
+    cout << "Enter your username: ";
+    cin >> username;
+
+    // Create a new score object
+    ScoreClass newScore(username, score);
+    // Add the new score to the vector
+    scoresVec.push_back(newScore);
+    // Sort the vector
+    for(int i = 0; i < scoresVec.size(); i++)
+    {
+        for(int j = 0; j < scoresVec.size()-1; j++)
+        {
+            if(scoresVec[j].getScore() < scoresVec[j+1].getScore())
+            {
+                ScoreClass temp = scoresVec[j];
+                scoresVec[j] = scoresVec[j+1];
+                scoresVec[j+1] = temp;
+            }
+        }
+    }
+    // Print the vector
+    for(int i = 0; i < scoresVec.size(); i++){
+        cout << scoresVec[i].getUsername() << " " << scoresVec[i].getScore() << endl;
+    }
+
+    // Write the vector to the file
+    ofstream scoreFileWrite;
+    scoreFileWrite.open("scores.csv");
+    if(scoreFileWrite.is_open())
+    {
+        for(int i = 0; i < scoresVec.size(); i++)
+        {
+            scoreFileWrite << scoresVec[i].getUsername() << "," << scoresVec[i].getScore() << endl;
+        }
+    }
+    else
+    {
+        cout << "File not found" << endl;
+    }
+
+    //
 }
 
 //__________________________ Functions __________________________
