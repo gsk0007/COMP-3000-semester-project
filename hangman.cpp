@@ -184,7 +184,7 @@ void Player::playGame(vector<string> words)
         // Get the guess from the user
         cout << "Enter a letter: ";
         cin >> guess;
-
+        tolower(guess);
         // Check if a guessed letter is in the word
         checkGuess(testWord, guess, guessCounter, board, letterLoc, lettersGuessed, wordDisplay);
 
