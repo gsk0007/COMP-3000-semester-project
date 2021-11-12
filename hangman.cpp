@@ -332,21 +332,20 @@ void Player::scoreSave()
 {
     // Get the previous scores
     ifstream scoreFile;
-    string userLine;
-    int scoreLine;
+    string userLine, scoreLine;
+    int scoreInt;
     char tempLine;
-    scoreFile.open("scores.csv");
+    scoreFile.open("scores.txt");
     if (scoreFile.is_open())
     {
         while (scoreFile.good())
         {
             // get username and score from file
             getline(scoreFile, userLine, ',');
-            scoreFile >> tempLine;
-            // throw away the comma and return character
-            scoreFile.get(tempLine);
+            getline(scoreFile, scoreLine, '\n');
+            scoreInt = stoi(scoreLine);
             // create new score object and add to vector of all scores
-            ScoreClass temp(userLine, scoreLine);
+            ScoreClass temp(userLine, scoreInt);
             scoresVec.push_back(temp);
         }
     }
@@ -381,47 +380,64 @@ void Player::scoreSave()
 
     // Write the vector to the file
     ofstream scoreFileWrite;
-    scoreFileWrite.open("scores.csv");
+    scoreFileWrite.open("scores.txt");
     if (scoreFileWrite.is_open())
     {
         for (int i = 0; i < scoresVec.size(); i++)
         {
-            scoreFileWrite << scoresVec[i].getUsername() << "," << scoresVec[i].getScore() << endl;
+            if(i == scoresVec.size() - 1)
+            {
+                scoreFileWrite << scoresVec[i].getUsername() << "," << scoresVec[i].getScore();
+            }
+            else
+            {
+                scoreFileWrite << scoresVec[i].getUsername() << "," << scoresVec[i].getScore() << endl;
+            }
+
+            //scoreFileWrite << scoresVec[i].getUsername() << "," << scoresVec[i].getScore() << endl;
         }
     }
     else
     {
         cout << "File not found" << endl;
     }
+    scoreFileWrite.close();
 }
 
 // ___________________ getHighScore ___________________________
 void Player::getHighScores(){
+    // // Remove all the scores from the vector
+    // for (int i = 0; i < scoresVec.size(); i++)
+    // {
+    //     scoresVec.pop_back();
+    // }
     // Get the previous scores
     ifstream scoreFileRead;
-    string userLine;
-    int scoreLine;
+    string userLine, scoreLine;
+    int scoreInt;
     char tempLine;
-    scoreFileRead.open("scores.csv");
-    if (scoreFileRead.is_open())
-    {
-        while (scoreFileRead.good())
+    if(scoresVec.size() == 0)
         {
-            // get username and score from file
-            getline(scoreFileRead, userLine, ',');
-            scoreFileRead >> scoreLine;
-            // throw away the comma and return character
-            scoreFileRead.get(tempLine);
-            // create new score object and add to vector of all scores
-            ScoreClass temp(userLine, scoreLine);
-            scoresVec.push_back(temp);
+        scoreFileRead.open("scores.txt");
+        if (scoreFileRead.is_open())
+        {
+            while (scoreFileRead.good())
+            {
+                // get username and score from file
+                getline(scoreFileRead, userLine, ',');
+                getline(scoreFileRead, scoreLine, '\n');
+                scoreInt = stoi(scoreLine);
+                // create new score object and add to vector of all scores
+                ScoreClass temp(userLine, scoreInt);
+                scoresVec.push_back(temp);
+            }
         }
+        else
+        {
+            cout << "File not found" << endl;
+        }
+        scoreFileRead.close();
     }
-    else
-    {
-        cout << "File not found" << endl;
-    }
-    scoreFileRead.close();
 
     // Print the vector
     for (int i = 0; i < scoresVec.size() && i < 5 ; i++)
