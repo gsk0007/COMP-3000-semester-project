@@ -3,7 +3,7 @@
 ## Competitive terminal hangman
 
 by Samuel Koser and Kennedy Edwards
-
+ 
 ### Description
 
 Here is a project we developed as mini project in C++.
