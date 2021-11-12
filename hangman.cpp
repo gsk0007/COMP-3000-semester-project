@@ -83,7 +83,7 @@ void Player::playGame(){
                 }
             }
         }
-        
+         
         // Prints the board
         cout << endl;
         for (int i = 0; i < 8; i++)
