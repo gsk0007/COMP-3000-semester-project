@@ -10,7 +10,7 @@
 #include <algorithm>
 using namespace std;
 
-// todo complete print score function
+// todo testing
 
 class ScoreClass
 {
@@ -406,11 +406,6 @@ void Player::scoreSave()
 
 // ___________________ getHighScore ___________________________
 void Player::getHighScores(){
-    // // Remove all the scores from the vector
-    // for (int i = 0; i < scoresVec.size(); i++)
-    // {
-    //     scoresVec.pop_back();
-    // }
     // Get the previous scores
     ifstream scoreFileRead;
     string userLine, scoreLine;
