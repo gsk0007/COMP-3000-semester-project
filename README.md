@@ -14,24 +14,60 @@ of a user profile and top score tracking.
 ### Functions
 
 ```
-class Player{
-    public:
-        randomWord() - chooses a random word from a file for player to guess
+class Player
+{
+public:
+    randomWord() - chooses a random word from a file for player to guess
 
-        checkGuess() - checks the letter that was guessed if it is in the word, then outputs the letter or an error based on guess
+    checkGuess() - checks the letter that was guessed if it is in the word, then outputs the letter or an error based on guess
 
-        getScore() - gets the score of the player
+    getHighScores() - Reads all scores out of score file and displays the top 5
 
-        getTime() - tracks the time the player takes to guess the word
+    getTime() - tracks the time the player takes to guess the word
 
-        playGame() - allows user to start playing a game
-    private:
-        string username;
-        int score;
-        double time;
+    playGame() - allows user to start playing a game
+
+    resetGame() - resets all private variables for Player object so another game can be played
+
+    scoreSave() - adds newest score to the vector of scores, sorts the vector so the highest score is on top, and saves all scores to the score file
+private:
+    // Variables
+    time_t endTime, startTime;
+    string username;
+    int score, wordCounter = 0, guessCounter = 0, temp, diceRoll;
+    double time;
+    bool wordSolve = false;
+    char guess, scoreChoice;
+    vector<char> lettersGuessed;
+    // vector to hold the scores
+    vector<ScoreClass> scoresVec;
+    char wordDisplay[50];
+    int letterLoc[50];
+    // initializes the board
+    char board[8][6];
 }
 
-int hangman() 
+class ScoreClass
+{
+public:
+    ScoreClass() - default constructor
+
+    ScoreClass(string getName, int getScore) - constructor with parameters
+    {
+        name = getName;
+        score = getScore;
+    };
+    
+    getScore() { return score; } - returns score
+    
+    string getUsername() { return name; } - returns name
+
+private:
+    string name;
+    int score;
+};
+
+int hangman() - Checks guess and updates game board accordingly
 ```
 
 ### Database

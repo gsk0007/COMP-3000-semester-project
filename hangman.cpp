@@ -31,7 +31,7 @@ int main()
     {
         while (file.good())
         {
-            getline(file, line);
+            getline(file, line, '\n');
             words.push_back(line);
         }
     }
