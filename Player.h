@@ -138,7 +138,7 @@ void Player::playGame(vector<string> words)
                 scoreSave();
             }
 
-            //cin.getline(username, 256);
+            // cin.getline(username, 256);
         }
         else if (guessCounter == 8)
         {
@@ -178,7 +178,7 @@ void Player::checkGuess(string testWord, char guess, int &guessCounter, char boa
 // gets a random word from the vector of all words
 string Player::randomWord(vector<string> wordVec)
 {
-    //diceRoll = distribution(generator);  // generates number in the range 1..370103
+    // diceRoll = distribution(generator);  // generates number in the range 1..370103
     return wordVec[rand() % 370102];
 };
 
@@ -288,7 +288,7 @@ void Player::scoreSave()
     {
         for (int i = 0; i < scoresVec.size(); i++)
         {
-            if(i == scoresVec.size() - 1)
+            if (i == scoresVec.size() - 1)
             {
                 scoreFileWrite << scoresVec[i].getUsername() << "," << scoresVec[i].getScore();
             }
@@ -297,7 +297,7 @@ void Player::scoreSave()
                 scoreFileWrite << scoresVec[i].getUsername() << "," << scoresVec[i].getScore() << endl;
             }
 
-            //scoreFileWrite << scoresVec[i].getUsername() << "," << scoresVec[i].getScore() << endl;
+            // scoreFileWrite << scoresVec[i].getUsername() << "," << scoresVec[i].getScore() << endl;
         }
     }
     else
@@ -308,14 +308,15 @@ void Player::scoreSave()
 }
 
 // ___________________ getHighScore ___________________________
-void Player::getHighScores(){
+void Player::getHighScores()
+{
     // Get the previous scores
     ifstream scoreFileRead;
     string userLine, scoreLine;
     int scoreInt;
     char tempLine;
-    if(scoresVec.size() == 0)
-        {
+    if (scoresVec.size() == 0)
+    {
         scoreFileRead.open("scores.txt");
         if (scoreFileRead.is_open())
         {
@@ -338,7 +339,7 @@ void Player::getHighScores(){
     }
 
     // Print the vector
-    for (int i = 0; i < scoresVec.size() && i < 5 ; i++)
+    for (int i = 0; i < scoresVec.size() && i < 5; i++)
     {
         cout << scoresVec[i].getUsername() << " " << scoresVec[i].getScore() << endl;
     }
